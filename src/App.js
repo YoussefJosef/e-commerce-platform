@@ -5,20 +5,43 @@ import Header from "./components/header/header.component";
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import Sign from "./pages/sign/sign.component";
+import {auth} from "./firebase/firebase.utils"
 
-function App() {
-  return (
-    <div>
-      <Header />
-      <Routes>
-        <Route index element={<HomePage />} />
-        <Route path="shop" element={<ShopPage />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="signin" element={<Sign />} />
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
-    </div>
-  );
+class App extends React.Component {
+  constructor(){
+    super();
+
+    this.state = {
+      currentUser: null
+    }
+  }
+  unsubscribeFromAuth = null ;
+  componentDidMount(){
+   this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      this.setState({currentUser : user});
+      console.log(user);
+    });
+  }
+
+  componentWillUnmount(){
+    this.unsubscribeFromAuth();
+  }
+  
+  render(){
+    return (
+      <div>
+        <Header />
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="shop" element={<ShopPage />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="signin" element={<Sign />} />
+          <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+      </div>
+    );
+  }
+ 
 }
 
 function Contact() {
