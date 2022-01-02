@@ -6,8 +6,8 @@ import './sign.styles.scss';
 const Sign = () => {
     return (
         <div className='sign'>
-            <SignIn></SignIn>
-            <SignUp></SignUp>
+            <SignIn/>
+            <SignUp/>
         </div>
     );
 };
